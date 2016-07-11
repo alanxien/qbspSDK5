@@ -1123,6 +1123,7 @@ public class FragmentDownLoad extends BaseFragment {
 		final EditText editText = new EditText(getActivity());
 		editText.setMinLines(3);
 		editText.setMaxLines(5);
+		editText.setGravity(Gravity.TOP| Gravity.LEFT);
 		aDialog = new AlertDialog.Builder(getActivity())
 		.setTitle("申诉")
 		.setPositiveButton("确定",
