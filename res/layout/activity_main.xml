@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+    <Button
+        android:id="@+id/btn_show_wall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开积分墙"
+        android:padding="10dp"
+        android:layout_margin="20dp"/>
+    <Button
+        android:id="@+id/btn_get_data_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取推荐任务列表"
+        android:padding="10dp"
+        android:layout_margin="20dp"/>
+    <Button
+        android:id="@+id/btn_get_dept_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取未完成任务列表"
+        android:padding="10dp"
+        android:layout_margin="20dp"/>
+
+</LinearLayout>
