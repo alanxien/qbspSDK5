@@ -387,6 +387,7 @@ public class FragmentRecomm extends BaseFragment {
 													
 													appInfo.setIcon(iconUrl);
 													
+													appInfo.setBigPushUrl(obj.getString("big_push_url").isEmpty()?"":Constant.URL.ROOT_URL+obj.getString("big_push_url"));
 													appInfo.setClicktype(obj.getInt("clicktype"));
 													appInfo.setIs_photo(obj.getInt("is_phopo"));
 													appInfo.setPhoto_remarks(obj.getString("photo_remarks"));

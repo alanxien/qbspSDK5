@@ -449,6 +449,7 @@ public class TangGuoActivity extends FragmentActivity implements
 				} else {
 					transaction.hide(fragmentRecomm).show(fragmentDepth)
 							.commit();
+					fragmentDepth.refresh();
 				}
 			} else {
 				Toast.makeText(this, "请插入SIM卡", Toast.LENGTH_SHORT).show();

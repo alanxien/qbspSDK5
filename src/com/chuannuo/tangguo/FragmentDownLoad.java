@@ -64,6 +64,7 @@ public class FragmentDownLoad extends BaseFragment {
 	public LinearLayout linearLayout9; // upload image
 	public LinearLayout linearLayout10;
 	public LinearLayout linearLayout11;
+	public LinearLayout linearLayout12; //step 5
 
 	private ImageView iv_logo;
 	private TextView tv_app_name;
@@ -76,10 +77,12 @@ public class FragmentDownLoad extends BaseFragment {
 	private ImageView ivStep2;
 	private ImageView ivStep3;
 	private ImageView ivStep4;
+	private ImageView ivStep5;
 	private TextView tv_tips1;
 	private TextView tv_tips2;
 	private TextView tv_tips3;
 	private TextView tv_tips4;
+	private TextView tv_tips5;
 
 	public TextView tv_desc;
 	private TextView tv_downLoad;
@@ -223,16 +226,19 @@ public class FragmentDownLoad extends BaseFragment {
 		linearLayout9 = new LinearLayout(getActivity());
 		linearLayout10 = new LinearLayout(getActivity());
 		linearLayout11 = new LinearLayout(getActivity());
+		linearLayout12 = new LinearLayout(getActivity());
 
 		ivStep1 = new ImageView(getActivity());
 		ivStep2 = new ImageView(getActivity());
 		ivStep3 = new ImageView(getActivity());
 		ivStep4 = new ImageView(getActivity());
+		ivStep5 = new ImageView(getActivity());
 
 		tv_tips1 = new TextView(getActivity());
 		tv_tips2 = new TextView(getActivity());
 		tv_tips3 = new TextView(getActivity());
 		tv_tips4 = new TextView(getActivity());
+		tv_tips5 = new TextView(getActivity());
 
 		LinearLayout.LayoutParams lp7 = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -242,7 +248,9 @@ public class FragmentDownLoad extends BaseFragment {
 		linearLayout8.setLayoutParams(lp7);
 		linearLayout10.setLayoutParams(lp7);
 		linearLayout11.setLayoutParams(lp7);
+		linearLayout12.setLayoutParams(lp7);
 		linearLayout11.setVisibility(View.GONE);
+		
 		/*
 		 * 图片上传
 		 */
@@ -279,6 +287,7 @@ public class FragmentDownLoad extends BaseFragment {
 		ivStep2.setLayoutParams(lp7);
 		ivStep3.setLayoutParams(lp7);
 		ivStep4.setLayoutParams(lp7);
+		ivStep5.setLayoutParams(lp7);
 		ivStep1.setImageBitmap(ResourceUtil.getImageFromAssetsFile(
 				getActivity(), "task_step1.png"));
 		ivStep2.setImageBitmap(ResourceUtil.getImageFromAssetsFile(
@@ -287,6 +296,8 @@ public class FragmentDownLoad extends BaseFragment {
 				getActivity(), "task_step3.png"));
 		ivStep4.setImageBitmap(ResourceUtil.getImageFromAssetsFile(
 				getActivity(), "task_step4.png"));
+		ivStep5.setImageBitmap(ResourceUtil.getImageFromAssetsFile(
+				getActivity(), "task_step5.png"));
 
 		lp7.setMargins(10, 0, 10, 10);
 		tv_tips1.setLayoutParams(lp7);
@@ -311,6 +322,11 @@ public class FragmentDownLoad extends BaseFragment {
 		tv_tips4.setText("");
 		tv_tips4.setTextSize(16);
 		tv_tips4.setTextColor(Color.parseColor(Constant.ColorValues.LIGHT_RED));
+		
+		tv_tips5.setLayoutParams(lp7);
+		tv_tips5.setText("");
+		tv_tips5.setTextSize(16);
+		tv_tips5.setTextColor(Color.parseColor(Constant.ColorValues.LIGHT_RED));
 
 		linearLayout6.addView(ivStep1);
 		linearLayout6.addView(tv_tips1);
@@ -322,6 +338,7 @@ public class FragmentDownLoad extends BaseFragment {
 		linearLayout4.addView(linearLayout6);
 		linearLayout4.addView(linearLayout7);
 		linearLayout4.addView(linearLayout8);
+		
 		if (appInfo.getClicktype() == 1
 				|| (appInfo.getClicktype() == 8 && appInfo.getIs_photo_task() == 1)) {
 			if (appInfo.getPhoto_remarks() != null
@@ -330,9 +347,31 @@ public class FragmentDownLoad extends BaseFragment {
 				linearLayout10.addView(ivStep4);
 				linearLayout10.addView(tv_tips4);
 				linearLayout4.addView(linearLayout10);
+				
+				if(!appInfo.getBigPushUrl().isEmpty()){
+					tv_tips5.setText("任务文档说明："+appInfo.getBigPushUrl());
+					tv_tips5.setAutoLinkMask(Linkify.ALL);
+					tv_tips5.setMovementMethod(LinkMovementMethod.getInstance());
+					linearLayout12.addView(ivStep5);
+					linearLayout12.addView(tv_tips5);
+					linearLayout4.addView(linearLayout12);
+				}
+			}else{
+				tv_tips4.setText("任务文档说明："+appInfo.getBigPushUrl());
+				tv_tips4.setAutoLinkMask(Linkify.ALL);
+				tv_tips4.setMovementMethod(LinkMovementMethod.getInstance());
+				linearLayout10.addView(ivStep4);
+				linearLayout10.addView(tv_tips4);
+				linearLayout4.addView(linearLayout10);
 			}
 
+		}else if(!appInfo.getBigPushUrl().isEmpty()){
+			tv_tips4.setText(appInfo.getBigPushUrl());
+			linearLayout10.addView(ivStep4);
+			linearLayout10.addView(tv_tips4);
+			linearLayout4.addView(linearLayout10);
 		}
+		
 		Log.w("FragmentDownLoad",
 				appInfo.getClicktype() + "--" + appInfo.getIs_photo_task()
 						+ "--" + appInfo.getPhoto_remarks());

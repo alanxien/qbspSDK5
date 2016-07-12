@@ -39,6 +39,7 @@ public class AppInfo implements Serializable{
 	public double vcPrice;
 	public String alert;
 	
+	private String bigPushUrl; //任务文档说明
 	public int is_photo;        //是否已经上传，0未上传，1已经 上传
 	private int photo_integral;  //上传任务可以获取多少积分
 	private int photo_status;   //图片 审核状态，0未上传，1待审核，2任务成功，3任务失败
@@ -318,6 +319,12 @@ public class AppInfo implements Serializable{
 	}
 	public void setCheck_remarks(String check_remarks) {
 		this.check_remarks = check_remarks;
+	}
+	public String getBigPushUrl() {
+		return bigPushUrl;
+	}
+	public void setBigPushUrl(String bigPushUrl) {
+		this.bigPushUrl = bigPushUrl;
 	}
 
 }
