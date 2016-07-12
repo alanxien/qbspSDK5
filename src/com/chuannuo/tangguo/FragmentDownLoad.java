@@ -1192,6 +1192,63 @@ public class FragmentDownLoad extends BaseFragment {
 				}).setView(editText).show();
 	}
 	
+	public void refreshUpView(List<String> imgsList,int upload_photo_number,int photo_upload_number){
+		imgsScrollView2.setVisibility(View.VISIBLE);
+		imgsScrollView2.removeAllViews();
+		
+		int s = imgsList.size();
+		LinearLayout linearLayout = new LinearLayout(
+				getActivity());
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, 600);
+		linearLayout.setLayoutParams(lp);
+		
+		linearLayout11.setVisibility(View.VISIBLE);
+		TextView textView = new TextView(getActivity());
+		textView.setText("已经上传图片：");
+		textView.setTextSize(20);
+		textView.setPadding(40, 20, 0, 20);
+		
+		linearLayout11.addView(textView);
+		
+		int u = photo_upload_number-upload_photo_number;
+		if(u>0){
+			TextView textView2 = new TextView(getActivity());
+			textView2.setText("再上传 "+u+" 张图片完成任务");
+			textView2.setTextSize(15);
+			textView2.setPadding(0, 20, 0, 20);
+			linearLayout11.addView(textView2);
+		}else{
+			TextView textView2 = new TextView(getActivity());
+			textView2.setText("上传完成，等待审核");
+			textView2.setMaxLines(3);
+			textView2.setTextSize(15);
+			textView2.setTextColor(Color
+					.parseColor(Constant.ColorValues.LIGHT_RED));
+			textView2.setPadding(0, 20, 0, 20);
+			linearLayout11.addView(textView2);
+		}
+		
+		for (int i = 0; i < s; i++) {
+			final String url = imgsList.get(i);
+			ImageView imageView = new ImageView(getActivity());
+			imageView.setId(i);
+			lp.setMargins(20, 20, 20, 20);
+			imageView.setLayoutParams(lp);
+			mImageLoader.loadImage(url, imageView, true, true);
+			linearLayout.addView(imageView);
+			// 查看大图
+			imageView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					viewBigPic(url);
+				}
+			});
+		}
+		imgsScrollView2.addView(linearLayout);
+	}
+	
 	private void postAppeal(String str){
 		if (progressDialog != null) {
 			progressDialog.dismiss();
