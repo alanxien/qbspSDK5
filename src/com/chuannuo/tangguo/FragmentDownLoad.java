@@ -8,6 +8,7 @@
  */
 package com.chuannuo.tangguo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -496,7 +497,7 @@ public class FragmentDownLoad extends BaseFragment {
 					tv_tips3.setText("按下面示例图截图上传即可获得 "
 							+ appInfo.getPhoto_integral()
 							+ appInfo.getTextName() + "，（注意只有一次上传机会，请严格按照要求上传）");
-					if(appInfo.getPhoto_status()==2 || appInfo.getPhoto_status()==3|| appInfo.getPhoto_status()==4){
+					if(appInfo.getPhoto_status()==1 || appInfo.getPhoto_status()==2 || appInfo.getPhoto_status()==3|| appInfo.getPhoto_status()==4){
 						linearLayout9.setVisibility(View.GONE);
 					}else{
 						linearLayout9.setVisibility(View.VISIBLE);
@@ -584,6 +585,8 @@ public class FragmentDownLoad extends BaseFragment {
 						linearLayout11.setVisibility(View.VISIBLE);
 						TextView textView = new TextView(getActivity());
 						textView.setText("已经上传图片：");
+						textView.setTextColor(Color
+								.parseColor(Constant.ColorValues.TITLE_COLOR));
 						textView.setTextSize(20);
 						textView.setPadding(40, 20, 0, 20);
 						
@@ -628,6 +631,8 @@ public class FragmentDownLoad extends BaseFragment {
 						if(u>0){
 							TextView textView2 = new TextView(getActivity());
 							textView2.setText("再上传 "+u+" 张图片完成任务");
+							textView2.setTextColor(Color
+									.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView2.setTextSize(15);
 							textView2.setPadding(0, 20, 0, 20);
 							linearLayout11.addView(textView2);
@@ -697,6 +702,8 @@ public class FragmentDownLoad extends BaseFragment {
 						linearLayout11.setVisibility(View.VISIBLE);
 						TextView textView = new TextView(getActivity());
 						textView.setText("已经上传图片：");
+						textView.setTextColor(Color
+								.parseColor(Constant.ColorValues.TITLE_COLOR));
 						textView.setTextSize(20);
 						textView.setPadding(40, 20, 0, 20);
 						
@@ -741,6 +748,8 @@ public class FragmentDownLoad extends BaseFragment {
 						if(u>0){
 							TextView textView2 = new TextView(getActivity());
 							textView2.setText("再上传 "+u+" 张图片完成任务");
+							textView2.setTextColor(Color
+									.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView2.setTextSize(15);
 							textView2.setPadding(0, 20, 0, 20);
 							linearLayout11.addView(textView2);
@@ -825,7 +834,7 @@ public class FragmentDownLoad extends BaseFragment {
 								+ "，（注意只有一次上传机会，请严格按照要求上传）");
 						imgsScrollView.setVisibility(View.VISIBLE);
 						if (appInfo.isSign()) {
-							if(appInfo.getPhoto_status()==2 || appInfo.getPhoto_status()==3|| appInfo.getPhoto_status()==4){
+							if(appInfo.getPhoto_status()==1 || appInfo.getPhoto_status()==2 || appInfo.getPhoto_status()==3|| appInfo.getPhoto_status()==4){
 								linearLayout9.setVisibility(View.GONE);
 							}else{
 								linearLayout9.setVisibility(View.VISIBLE);
@@ -914,6 +923,8 @@ public class FragmentDownLoad extends BaseFragment {
 							linearLayout11.setVisibility(View.VISIBLE);
 							TextView textView = new TextView(getActivity());
 							textView.setText("已经上传图片：");
+							textView.setTextColor(Color
+									.parseColor(Constant.ColorValues.TITLE_COLOR));
 							textView.setTextSize(20);
 							textView.setPadding(40, 20, 0, 20);
 							
@@ -958,6 +969,8 @@ public class FragmentDownLoad extends BaseFragment {
 							if(u>0){
 								TextView textView2 = new TextView(getActivity());
 								textView2.setText("再上传 "+u+" 张图片完成任务");
+								textView2.setTextColor(Color
+										.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView2.setTextSize(15);
 								textView2.setPadding(0, 20, 0, 20);
 								linearLayout11.addView(textView2);
@@ -1027,6 +1040,8 @@ public class FragmentDownLoad extends BaseFragment {
 							linearLayout11.setVisibility(View.VISIBLE);
 							TextView textView = new TextView(getActivity());
 							textView.setText("已经上传图片：");
+							textView.setTextColor(Color
+									.parseColor(Constant.ColorValues.TITLE_COLOR));
 							textView.setTextSize(20);
 							textView.setPadding(40, 20, 0, 20);
 							
@@ -1071,6 +1086,8 @@ public class FragmentDownLoad extends BaseFragment {
 							if(u>0){
 								TextView textView2 = new TextView(getActivity());
 								textView2.setText("再上传 "+u+" 张图片完成任务");
+								textView2.setTextColor(Color
+										.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView2.setTextSize(15);
 								textView2.setPadding(0, 20, 0, 20);
 								linearLayout11.addView(textView2);
@@ -1192,6 +1209,16 @@ public class FragmentDownLoad extends BaseFragment {
 				}).setView(editText).show();
 	}
 	
+	/** 
+	* @Title: refreshUpView 
+	* @Description: TODO
+	* @author  xie.xin
+	* @param @param imgsList
+	* @param @param upload_photo_number 已经上传的图片
+	* @param @param photo_upload_number 需要上传 的图片
+	* @return void 
+	* @throws 
+	*/
 	public void refreshUpView(List<String> imgsList,int upload_photo_number,int photo_upload_number){
 		imgsScrollView2.setVisibility(View.VISIBLE);
 		imgsScrollView2.removeAllViews();
@@ -1206,6 +1233,8 @@ public class FragmentDownLoad extends BaseFragment {
 		linearLayout11.setVisibility(View.VISIBLE);
 		TextView textView = new TextView(getActivity());
 		textView.setText("已经上传图片：");
+		textView.setTextColor(Color
+				.parseColor(Constant.ColorValues.TITLE_COLOR));
 		textView.setTextSize(20);
 		textView.setPadding(40, 20, 0, 20);
 		
@@ -1215,10 +1244,13 @@ public class FragmentDownLoad extends BaseFragment {
 		if(u>0){
 			TextView textView2 = new TextView(getActivity());
 			textView2.setText("再上传 "+u+" 张图片完成任务");
+			textView2.setTextColor(Color
+					.parseColor(Constant.ColorValues.LIGHT_RED));
 			textView2.setTextSize(15);
 			textView2.setPadding(0, 20, 0, 20);
 			linearLayout11.addView(textView2);
 		}else{
+			linearLayout9.setVisibility(View.GONE);
 			TextView textView2 = new TextView(getActivity());
 			textView2.setText("上传完成，等待审核");
 			textView2.setMaxLines(3);

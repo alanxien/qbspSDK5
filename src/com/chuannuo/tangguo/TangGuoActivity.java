@@ -40,6 +40,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -679,6 +680,7 @@ public class TangGuoActivity extends FragmentActivity implements
 			@Override
 			public void onSuccess(int statusCode, Header[] headers,
 					String content) {
+				Log.i("TangGuoActivity", content);
 				JSONObject obj = null;
 				try {
 					obj = new JSONObject(content);
@@ -694,6 +696,7 @@ public class TangGuoActivity extends FragmentActivity implements
 
 						progressDialog.dismiss();
 						//fragmentDownLoad.linearLayout9.setVisibility(View.GONE);
+						//refreshUpView(23);
 						Toast.makeText(TangGuoActivity.this, "图片上传成功",
 								Toast.LENGTH_LONG).show();
 					} else {
