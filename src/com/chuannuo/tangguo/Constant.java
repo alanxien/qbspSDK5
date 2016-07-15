@@ -98,7 +98,7 @@ public class Constant {
 	 * @Description: 字符常量，string.xml
 	 */
 	public class StringValues{
-		public static final String APP_NAME = "钱包锁屏";
+		public static final String APP_NAME = "钱包夺宝";
 		public static final String TITLE = "精品应用推荐";
 		public static final String ADD_SCORE_SUCCESS = "增加积分成功";
 		public static final String RECOMM_TASK = "任务列表";

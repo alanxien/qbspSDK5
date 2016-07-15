@@ -65,7 +65,7 @@ public class FragmentDownLoad extends BaseFragment {
 	public LinearLayout linearLayout9; // upload image
 	public LinearLayout linearLayout10;
 	public LinearLayout linearLayout11;
-	public LinearLayout linearLayout12; //step 5
+	public LinearLayout linearLayout12; // step 5
 
 	private ImageView iv_logo;
 	private TextView tv_app_name;
@@ -92,8 +92,8 @@ public class FragmentDownLoad extends BaseFragment {
 	public PopupWindow popupWindow;
 
 	private HorizontalScrollView imgsScrollView;
-	private HorizontalScrollView imgsScrollView2;//用户上传图片
-	
+	private HorizontalScrollView imgsScrollView2;// 用户上传图片
+
 	private AlertDialog aDialog;
 
 	@Override
@@ -251,7 +251,7 @@ public class FragmentDownLoad extends BaseFragment {
 		linearLayout11.setLayoutParams(lp7);
 		linearLayout12.setLayoutParams(lp7);
 		linearLayout11.setVisibility(View.GONE);
-		
+
 		/*
 		 * 图片上传
 		 */
@@ -281,7 +281,7 @@ public class FragmentDownLoad extends BaseFragment {
 
 		linearLayout9.setPadding(20, 20, 20, 20);
 		linearLayout9.setLayoutParams(lpUpload);
-		//linearLayout9.addView(rl_upload);
+		// linearLayout9.addView(rl_upload);
 		linearLayout9.addView(iv_upload);
 
 		ivStep1.setLayoutParams(lp7);
@@ -323,7 +323,7 @@ public class FragmentDownLoad extends BaseFragment {
 		tv_tips4.setText("");
 		tv_tips4.setTextSize(16);
 		tv_tips4.setTextColor(Color.parseColor(Constant.ColorValues.LIGHT_RED));
-		
+
 		tv_tips5.setLayoutParams(lp7);
 		tv_tips5.setText("");
 		tv_tips5.setTextSize(16);
@@ -339,7 +339,7 @@ public class FragmentDownLoad extends BaseFragment {
 		linearLayout4.addView(linearLayout6);
 		linearLayout4.addView(linearLayout7);
 		linearLayout4.addView(linearLayout8);
-		
+
 		if (appInfo.getClicktype() == 1
 				|| (appInfo.getClicktype() == 8 && appInfo.getIs_photo_task() == 1)) {
 			if (appInfo.getPhoto_remarks() != null
@@ -348,17 +348,17 @@ public class FragmentDownLoad extends BaseFragment {
 				linearLayout10.addView(ivStep4);
 				linearLayout10.addView(tv_tips4);
 				linearLayout4.addView(linearLayout10);
-				
-				if(!appInfo.getBigPushUrl().isEmpty()){
-					tv_tips5.setText("任务文档说明："+appInfo.getBigPushUrl());
+
+				if (!appInfo.getBigPushUrl().isEmpty()) {
+					tv_tips5.setText("任务文档说明：" + appInfo.getBigPushUrl());
 					tv_tips5.setAutoLinkMask(Linkify.ALL);
 					tv_tips5.setMovementMethod(LinkMovementMethod.getInstance());
 					linearLayout12.addView(ivStep5);
 					linearLayout12.addView(tv_tips5);
 					linearLayout4.addView(linearLayout12);
 				}
-			}else{
-				tv_tips4.setText("任务文档说明："+appInfo.getBigPushUrl());
+			} else {
+				tv_tips4.setText("任务文档说明：" + appInfo.getBigPushUrl());
 				tv_tips4.setAutoLinkMask(Linkify.ALL);
 				tv_tips4.setMovementMethod(LinkMovementMethod.getInstance());
 				linearLayout10.addView(ivStep4);
@@ -366,13 +366,13 @@ public class FragmentDownLoad extends BaseFragment {
 				linearLayout4.addView(linearLayout10);
 			}
 
-		}else if(!appInfo.getBigPushUrl().isEmpty()){
+		} else if (!appInfo.getBigPushUrl().isEmpty()) {
 			tv_tips4.setText(appInfo.getBigPushUrl());
 			linearLayout10.addView(ivStep4);
 			linearLayout10.addView(tv_tips4);
 			linearLayout4.addView(linearLayout10);
 		}
-		
+
 		Log.w("FragmentDownLoad",
 				appInfo.getClicktype() + "--" + appInfo.getIs_photo_task()
 						+ "--" + appInfo.getPhoto_remarks());
@@ -424,7 +424,7 @@ public class FragmentDownLoad extends BaseFragment {
 		lpHv.setMargins(20, 20, 20, 20);
 		imgsScrollView.setLayoutParams(lpHv);
 		imgsScrollView.setHorizontalScrollBarEnabled(false);
-		
+
 		imgsScrollView2 = new HorizontalScrollView(getActivity());
 		imgsScrollView2.setLayoutParams(lpHv);
 		imgsScrollView2.setHorizontalScrollBarEnabled(false);
@@ -497,15 +497,25 @@ public class FragmentDownLoad extends BaseFragment {
 					tv_tips3.setText("按下面示例图截图上传即可获得 "
 							+ appInfo.getPhoto_integral()
 							+ appInfo.getTextName() + "，（注意只有一次上传机会，请严格按照要求上传）");
-					if(appInfo.getPhoto_status()==1 || appInfo.getPhoto_status()==2 || appInfo.getPhoto_status()==3|| appInfo.getPhoto_status()==4){
+					if (appInfo.getPhoto_status() == 1
+							|| appInfo.getPhoto_status() == 2
+							|| appInfo.getPhoto_status() == 3
+							|| appInfo.getPhoto_status() == 4) {
 						linearLayout9.setVisibility(View.GONE);
-					}else{
+					}  else if (appInfo.getPhoto_status() == 1) {
+						if (appInfo.getCurr_upload_photo() == appInfo
+								.getUpload_photo()) {
+							linearLayout9.setVisibility(View.GONE);
+						} else {
+							linearLayout9.setVisibility(View.VISIBLE);
+						}
+					} else {
 						linearLayout9.setVisibility(View.VISIBLE);
 					}
-					
+
 					tv_screen.setVisibility(View.VISIBLE);
 					imgsScrollView.setVisibility(View.VISIBLE);
-					
+
 					editor.putBoolean(Constant.IS_SIGN, false);
 					editor.commit();
 
@@ -518,13 +528,13 @@ public class FragmentDownLoad extends BaseFragment {
 						LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 								LayoutParams.MATCH_PARENT, 600);
 						linearLayout.setLayoutParams(lp);
-						
+
 						TextView textView = new TextView(getActivity());
 						textView.setText("示例图：");
 						textView.setTextSize(20);
 						textView.setPadding(40, 20, 0, 20);
 						linearLayout.addView(textView);
-						
+
 						for (int i = 0; i < s; i++) {
 							final String url = imgsList.get(i);
 							ImageView imageView = new ImageView(getActivity());
@@ -549,7 +559,7 @@ public class FragmentDownLoad extends BaseFragment {
 						LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 								LayoutParams.MATCH_PARENT, 600);
 						linearLayout.setLayoutParams(lp);
-						
+
 						TextView textView = new TextView(getActivity());
 						textView.setText("示例图：");
 						textView.setTextSize(20);
@@ -571,8 +581,9 @@ public class FragmentDownLoad extends BaseFragment {
 						});
 						imgsScrollView.addView(linearLayout);
 					}
-					
-					if (appInfo.getUpImgList()!=null&&appInfo.getUpImgList().size()>0) {
+
+					if (appInfo.getUpImgList() != null
+							&& appInfo.getUpImgList().size() > 0) {
 						imgsScrollView2.setVisibility(View.VISIBLE);
 						List<String> imgsList = appInfo.getUpImgList();
 						int s = imgsList.size();
@@ -581,7 +592,7 @@ public class FragmentDownLoad extends BaseFragment {
 						LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 								LayoutParams.MATCH_PARENT, 600);
 						linearLayout.setLayoutParams(lp);
-						
+
 						linearLayout11.setVisibility(View.VISIBLE);
 						TextView textView = new TextView(getActivity());
 						textView.setText("已经上传图片：");
@@ -589,9 +600,9 @@ public class FragmentDownLoad extends BaseFragment {
 								.parseColor(Constant.ColorValues.TITLE_COLOR));
 						textView.setTextSize(20);
 						textView.setPadding(40, 20, 0, 20);
-						
+
 						linearLayout11.addView(textView);
-						
+
 						int appeal = appInfo.getAppeal();
 						int status = appInfo.getPhoto_status();
 						String strAppeal = "";
@@ -609,7 +620,7 @@ public class FragmentDownLoad extends BaseFragment {
 						default:
 							break;
 						}
-						
+
 						switch (status) {
 						case 0:
 							strStatus = "未上传";
@@ -621,58 +632,63 @@ public class FragmentDownLoad extends BaseFragment {
 							strStatus = "任务完成";
 							break;
 						case 3:
-							strStatus = "任务失败-"+appInfo.getCheck_remarks();
+							strStatus = "任务失败-" + appInfo.getCheck_remarks();
 							break;
 						default:
 							break;
 						}
-						
-						int u = appInfo.getUpload_photo()-appInfo.getCurr_upload_photo();
-						if(u>0){
+
+						int u = appInfo.getUpload_photo()
+								- appInfo.getCurr_upload_photo();
+						if (u > 0) {
 							TextView textView2 = new TextView(getActivity());
-							textView2.setText("再上传 "+u+" 张图片完成任务");
-							textView2.setTextColor(Color
-									.parseColor(Constant.ColorValues.LIGHT_RED));
+							textView2.setText("再上传 " + u + " 张图片完成任务");
+							textView2
+									.setTextColor(Color
+											.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView2.setTextSize(15);
 							textView2.setPadding(0, 20, 0, 20);
 							linearLayout11.addView(textView2);
-						}else{
+						} else {
 							TextView textView2 = new TextView(getActivity());
 							textView2.setText(strStatus);
 							textView2.setMaxLines(3);
 							textView2.setTextSize(15);
-							textView2.setTextColor(Color
-									.parseColor(Constant.ColorValues.LIGHT_RED));
+							textView2
+									.setTextColor(Color
+											.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView2.setPadding(0, 20, 0, 20);
 							linearLayout11.addView(textView2);
 						}
-						
+
 						TextView textView3 = new TextView(getActivity());
-						if(appeal==1){
+						if (appeal == 1) {
 							textView3.setText(strAppeal);
-							textView3.setBackgroundColor(Color
-			.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
+							textView3
+									.setBackgroundColor(Color
+											.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
 							textView3.setTextColor(Color
-			.parseColor(Constant.ColorValues.WHITE));
+									.parseColor(Constant.ColorValues.WHITE));
 							textView3.setTextSize(15);
 							textView3.setPadding(40, 20, 40, 40);
 							textView3.setOnClickListener(new OnClickListener() {
-								
+
 								@Override
 								public void onClick(View v) {
 									appeal();
 								}
 							});
-						}else if(appeal==3){
+						} else if (appeal == 3) {
 							textView3.setText(strAppeal);
-							textView3.setTextColor(Color
-			.parseColor(Constant.ColorValues.LIGHT_RED));
+							textView3
+									.setTextColor(Color
+											.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView3.setTextSize(15);
 							textView3.setPadding(20, 20, 0, 20);
 						}
-						
+
 						linearLayout11.addView(textView3);
-						
+
 						for (int i = 0; i < s; i++) {
 							final String url = imgsList.get(i);
 							ImageView imageView = new ImageView(getActivity());
@@ -691,14 +707,15 @@ public class FragmentDownLoad extends BaseFragment {
 							});
 						}
 						imgsScrollView2.addView(linearLayout);
-					} else if(appInfo.getPhoto()!=null&& !appInfo.getPhoto().isEmpty()){
+					} else if (appInfo.getPhoto() != null
+							&& !appInfo.getPhoto().isEmpty()) {
 						imgsScrollView2.setVisibility(View.VISIBLE);
 						LinearLayout linearLayout = new LinearLayout(
 								getActivity());
 						LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 								LayoutParams.MATCH_PARENT, 600);
 						linearLayout.setLayoutParams(lp);
-						
+
 						linearLayout11.setVisibility(View.VISIBLE);
 						TextView textView = new TextView(getActivity());
 						textView.setText("已经上传图片：");
@@ -706,9 +723,9 @@ public class FragmentDownLoad extends BaseFragment {
 								.parseColor(Constant.ColorValues.TITLE_COLOR));
 						textView.setTextSize(20);
 						textView.setPadding(40, 20, 0, 20);
-						
+
 						linearLayout11.addView(textView);
-						
+
 						int appeal = appInfo.getAppeal();
 						int status = appInfo.getPhoto_status();
 						String strAppeal = "";
@@ -726,7 +743,7 @@ public class FragmentDownLoad extends BaseFragment {
 						default:
 							break;
 						}
-						
+
 						switch (status) {
 						case 0:
 							strStatus = "未上传";
@@ -738,56 +755,61 @@ public class FragmentDownLoad extends BaseFragment {
 							strStatus = "任务完成";
 							break;
 						case 3:
-							strStatus = "任务失败"+appInfo.getCheck_remarks();
+							strStatus = "任务失败" + appInfo.getCheck_remarks();
 							break;
 						default:
 							break;
 						}
-						
-						int u = appInfo.getUpload_photo()-appInfo.getCurr_upload_photo();
-						if(u>0){
+
+						int u = appInfo.getUpload_photo()
+								- appInfo.getCurr_upload_photo();
+						if (u > 0) {
 							TextView textView2 = new TextView(getActivity());
-							textView2.setText("再上传 "+u+" 张图片完成任务");
-							textView2.setTextColor(Color
-									.parseColor(Constant.ColorValues.LIGHT_RED));
+							textView2.setText("再上传 " + u + " 张图片完成任务");
+							textView2
+									.setTextColor(Color
+											.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView2.setTextSize(15);
 							textView2.setPadding(0, 20, 0, 20);
 							linearLayout11.addView(textView2);
-						}else{
+						} else {
 							TextView textView2 = new TextView(getActivity());
 							textView2.setText(strStatus);
 							textView2.setMaxLines(3);
 							textView2.setTextSize(15);
-							textView2.setTextColor(Color
-									.parseColor(Constant.ColorValues.LIGHT_RED));
+							textView2
+									.setTextColor(Color
+											.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView2.setPadding(0, 20, 0, 20);
 							linearLayout11.addView(textView2);
 						}
-						
+
 						TextView textView3 = new TextView(getActivity());
-						if(appeal==1){
+						if (appeal == 1) {
 							textView3.setText(strAppeal);
-							textView3.setBackgroundColor(Color
-			.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
+							textView3
+									.setBackgroundColor(Color
+											.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
 							textView3.setTextColor(Color
-			.parseColor(Constant.ColorValues.WHITE));
+									.parseColor(Constant.ColorValues.WHITE));
 							textView3.setTextSize(15);
 							textView3.setPadding(40, 20, 40, 40);
 							textView3.setOnClickListener(new OnClickListener() {
-								
+
 								@Override
 								public void onClick(View v) {
 									appeal();
 								}
 							});
-						}else if(appeal==3){
+						} else if (appeal == 3) {
 							textView3.setText(strAppeal);
-							textView3.setTextColor(Color
-			.parseColor(Constant.ColorValues.LIGHT_RED));
+							textView3
+									.setTextColor(Color
+											.parseColor(Constant.ColorValues.LIGHT_RED));
 							textView3.setTextSize(15);
 							textView3.setPadding(20, 20, 0, 20);
 						}
-						
+
 						linearLayout11.addView(textView3);
 
 						ImageView imageView = new ImageView(getActivity());
@@ -834,9 +856,18 @@ public class FragmentDownLoad extends BaseFragment {
 								+ "，（注意只有一次上传机会，请严格按照要求上传）");
 						imgsScrollView.setVisibility(View.VISIBLE);
 						if (appInfo.isSign()) {
-							if(appInfo.getPhoto_status()==1 || appInfo.getPhoto_status()==2 || appInfo.getPhoto_status()==3|| appInfo.getPhoto_status()==4){
+							if (appInfo.getPhoto_status() == 2
+									|| appInfo.getPhoto_status() == 3
+									|| appInfo.getPhoto_status() == 4) {
 								linearLayout9.setVisibility(View.GONE);
-							}else{
+							} else if (appInfo.getPhoto_status() == 1) {
+								if (appInfo.getCurr_upload_photo() == appInfo
+										.getUpload_photo()) {
+									linearLayout9.setVisibility(View.GONE);
+								} else {
+									linearLayout9.setVisibility(View.VISIBLE);
+								}
+							} else {
 								linearLayout9.setVisibility(View.VISIBLE);
 							}
 						} else {
@@ -853,7 +884,7 @@ public class FragmentDownLoad extends BaseFragment {
 							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 									LayoutParams.MATCH_PARENT, 600);
 							linearLayout.setLayoutParams(lp);
-							
+
 							TextView textView = new TextView(getActivity());
 							textView.setText("示例图：");
 							textView.setTextSize(20);
@@ -881,13 +912,13 @@ public class FragmentDownLoad extends BaseFragment {
 										});
 							}
 							imgsScrollView.addView(linearLayout);
-						}else {
+						} else {
 							LinearLayout linearLayout = new LinearLayout(
 									getActivity());
 							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 									LayoutParams.MATCH_PARENT, 600);
 							linearLayout.setLayoutParams(lp);
-							
+
 							TextView textView = new TextView(getActivity());
 							textView.setText("示例图：");
 							textView.setTextSize(20);
@@ -909,8 +940,9 @@ public class FragmentDownLoad extends BaseFragment {
 							});
 							imgsScrollView.addView(linearLayout);
 						}
-						
-						if (appInfo.getUpImgList()!=null&&appInfo.getUpImgList().size()>0) {
+
+						if (appInfo.getUpImgList() != null
+								&& appInfo.getUpImgList().size() > 0) {
 							imgsScrollView2.setVisibility(View.VISIBLE);
 							List<String> imgsList = appInfo.getUpImgList();
 							int s = imgsList.size();
@@ -919,7 +951,7 @@ public class FragmentDownLoad extends BaseFragment {
 							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 									LayoutParams.MATCH_PARENT, 600);
 							linearLayout.setLayoutParams(lp);
-							
+
 							linearLayout11.setVisibility(View.VISIBLE);
 							TextView textView = new TextView(getActivity());
 							textView.setText("已经上传图片：");
@@ -927,9 +959,9 @@ public class FragmentDownLoad extends BaseFragment {
 									.parseColor(Constant.ColorValues.TITLE_COLOR));
 							textView.setTextSize(20);
 							textView.setPadding(40, 20, 0, 20);
-							
+
 							linearLayout11.addView(textView);
-							
+
 							int appeal = appInfo.getAppeal();
 							int status = appInfo.getPhoto_status();
 							String strAppeal = "";
@@ -947,7 +979,7 @@ public class FragmentDownLoad extends BaseFragment {
 							default:
 								break;
 							}
-							
+
 							switch (status) {
 							case 0:
 								strStatus = "未上传";
@@ -959,84 +991,95 @@ public class FragmentDownLoad extends BaseFragment {
 								strStatus = "任务完成";
 								break;
 							case 3:
-								strStatus = "任务失败"+appInfo.getCheck_remarks();
+								strStatus = "任务失败" + appInfo.getCheck_remarks();
 								break;
 							default:
 								break;
 							}
-							
-							int u = appInfo.getUpload_photo()-appInfo.getCurr_upload_photo();
-							if(u>0){
+
+							int u = appInfo.getUpload_photo()
+									- appInfo.getCurr_upload_photo();
+							if (u > 0) {
 								TextView textView2 = new TextView(getActivity());
-								textView2.setText("再上传 "+u+" 张图片完成任务");
-								textView2.setTextColor(Color
-										.parseColor(Constant.ColorValues.LIGHT_RED));
+								textView2.setText("再上传 " + u + " 张图片完成任务");
+								textView2
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView2.setTextSize(15);
 								textView2.setPadding(0, 20, 0, 20);
 								linearLayout11.addView(textView2);
-							}else{
+							} else {
 								TextView textView2 = new TextView(getActivity());
 								textView2.setText(strStatus);
 								textView2.setMaxLines(3);
 								textView2.setTextSize(15);
-								textView2.setTextColor(Color
-										.parseColor(Constant.ColorValues.LIGHT_RED));
+								textView2
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView2.setPadding(0, 20, 0, 20);
 								linearLayout11.addView(textView2);
 							}
-							
+
 							TextView textView3 = new TextView(getActivity());
-							if(appeal==1){
+							if (appeal == 1) {
 								textView3.setText(strAppeal);
-								textView3.setBackgroundColor(Color
-				.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
-								textView3.setTextColor(Color
-				.parseColor(Constant.ColorValues.WHITE));
+								textView3
+										.setBackgroundColor(Color
+												.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
+								textView3
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.WHITE));
 								textView3.setTextSize(15);
 								textView3.setPadding(40, 20, 40, 40);
-								textView3.setOnClickListener(new OnClickListener() {
-									
-									@Override
-									public void onClick(View v) {
-										appeal();
-									}
-								});
-							}else if(appeal==3){
+								textView3
+										.setOnClickListener(new OnClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												appeal();
+											}
+										});
+							} else if (appeal == 3) {
 								textView3.setText(strAppeal);
-								textView3.setTextColor(Color
-				.parseColor(Constant.ColorValues.LIGHT_RED));
+								textView3
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView3.setTextSize(15);
 								textView3.setPadding(20, 20, 0, 20);
 							}
-							
+
 							linearLayout11.addView(textView3);
-							
+
 							for (int i = 0; i < s; i++) {
 								final String url = imgsList.get(i);
-								ImageView imageView = new ImageView(getActivity());
+								ImageView imageView = new ImageView(
+										getActivity());
 								imageView.setId(i);
 								lp.setMargins(20, 20, 20, 20);
 								imageView.setLayoutParams(lp);
-								mImageLoader.loadImage(url, imageView, true, true);
+								mImageLoader.loadImage(url, imageView, true,
+										true);
 								linearLayout.addView(imageView);
 								// 查看大图
-								imageView.setOnClickListener(new OnClickListener() {
+								imageView
+										.setOnClickListener(new OnClickListener() {
 
-									@Override
-									public void onClick(View v) {
-										viewBigPic(url);
-									}
-								});
+											@Override
+											public void onClick(View v) {
+												viewBigPic(url);
+											}
+										});
 							}
 							imgsScrollView2.addView(linearLayout);
-						} else if(appInfo.getPhoto()!=null && !appInfo.getPhoto().isEmpty()){
+						} else if (appInfo.getPhoto() != null
+								&& !appInfo.getPhoto().isEmpty()) {
 							imgsScrollView2.setVisibility(View.VISIBLE);
 							LinearLayout linearLayout = new LinearLayout(
 									getActivity());
 							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 									LayoutParams.MATCH_PARENT, 600);
 							linearLayout.setLayoutParams(lp);
-							
+
 							linearLayout11.setVisibility(View.VISIBLE);
 							TextView textView = new TextView(getActivity());
 							textView.setText("已经上传图片：");
@@ -1044,9 +1087,9 @@ public class FragmentDownLoad extends BaseFragment {
 									.parseColor(Constant.ColorValues.TITLE_COLOR));
 							textView.setTextSize(20);
 							textView.setPadding(40, 20, 0, 20);
-							
+
 							linearLayout11.addView(textView);
-							
+
 							int appeal = appInfo.getAppeal();
 							int status = appInfo.getPhoto_status();
 							String strAppeal = "";
@@ -1064,7 +1107,7 @@ public class FragmentDownLoad extends BaseFragment {
 							default:
 								break;
 							}
-							
+
 							switch (status) {
 							case 0:
 								strStatus = "未上传";
@@ -1076,58 +1119,65 @@ public class FragmentDownLoad extends BaseFragment {
 								strStatus = "任务完成";
 								break;
 							case 3:
-								strStatus = "任务失败"+appInfo.getCheck_remarks();
+								strStatus = "任务失败" + appInfo.getCheck_remarks();
 								break;
 							default:
 								break;
 							}
-							
-							int u = appInfo.getUpload_photo()-appInfo.getCurr_upload_photo();
-							if(u>0){
+
+							int u = appInfo.getUpload_photo()
+									- appInfo.getCurr_upload_photo();
+							if (u > 0) {
 								TextView textView2 = new TextView(getActivity());
-								textView2.setText("再上传 "+u+" 张图片完成任务");
-								textView2.setTextColor(Color
-										.parseColor(Constant.ColorValues.LIGHT_RED));
+								textView2.setText("再上传 " + u + " 张图片完成任务");
+								textView2
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView2.setTextSize(15);
 								textView2.setPadding(0, 20, 0, 20);
 								linearLayout11.addView(textView2);
-							}else{
+							} else {
 								TextView textView2 = new TextView(getActivity());
 								textView2.setText(strStatus);
 								textView2.setMaxLines(3);
 								textView2.setTextSize(15);
-								textView2.setTextColor(Color
-										.parseColor(Constant.ColorValues.LIGHT_RED));
+								textView2
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView2.setPadding(0, 20, 0, 20);
 								linearLayout11.addView(textView2);
 							}
-							
+
 							TextView textView3 = new TextView(getActivity());
-							if(appeal==1){
+							if (appeal == 1) {
 								textView3.setText(strAppeal);
-								textView3.setBackgroundColor(Color
-				.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
-								textView3.setTextColor(Color
-				.parseColor(Constant.ColorValues.WHITE));
+								textView3
+										.setBackgroundColor(Color
+												.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
+								textView3
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.WHITE));
 								textView3.setTextSize(15);
 								textView3.setPadding(40, 20, 40, 40);
-								textView3.setOnClickListener(new OnClickListener() {
-									
-									@Override
-									public void onClick(View v) {
-										appeal();
-									}
-								});
-							}else if(appeal==3){
+								textView3
+										.setOnClickListener(new OnClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												appeal();
+											}
+										});
+							} else if (appeal == 3) {
 								textView3.setText(strAppeal);
-								textView3.setTextColor(Color
-				.parseColor(Constant.ColorValues.LIGHT_RED));
+								textView3
+										.setTextColor(Color
+												.parseColor(Constant.ColorValues.LIGHT_RED));
 								textView3.setTextSize(15);
 								textView3.setPadding(20, 20, 0, 20);
 							}
-							
+
 							linearLayout11.addView(textView3);
-							
+
 							ImageView imageView = new ImageView(getActivity());
 							imageView.setLayoutParams(lp);
 							mImageLoader.loadImage(appInfo.getPhoto(),
@@ -1166,70 +1216,67 @@ public class FragmentDownLoad extends BaseFragment {
 			tv_downLoad.setVisibility(View.GONE);
 		}
 	}
-	
-	/** 
-	* @Title: appeal 
-	* @Description: 申诉
-	* @author  xie.xin
-	* @param 
-	* @return void 
-	* @throws 
-	*/
-	private void appeal(){
+
+	/**
+	 * @Title: appeal
+	 * @Description: 申诉
+	 * @author xie.xin
+	 * @param
+	 * @return void
+	 * @throws
+	 */
+	private void appeal() {
 		final EditText editText = new EditText(getActivity());
 		editText.setMinLines(3);
 		editText.setMaxLines(5);
-		editText.setGravity(Gravity.TOP| Gravity.LEFT);
+		editText.setGravity(Gravity.TOP | Gravity.LEFT);
 		aDialog = new AlertDialog.Builder(getActivity())
-		.setTitle("申诉")
-		.setPositiveButton("确定",
-				new DialogInterface.OnClickListener() {
+				.setTitle("申诉")
+				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
 					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
+					public void onClick(DialogInterface dialog, int which) {
 						// 点击“确认”后的上传图片
 						String str = editText.getText().toString();
-						if(!str.isEmpty()){
+						if (!str.isEmpty()) {
 							postAppeal(str);
-						}else{
-							Toast.makeText(getActivity(), "申诉理由不能为空", Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getActivity(), "申诉理由不能为空",
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 				})
-		.setNegativeButton("返回",
-				new DialogInterface.OnClickListener() {
+				.setNegativeButton("返回", new DialogInterface.OnClickListener() {
 
 					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
+					public void onClick(DialogInterface dialog, int which) {
 						// 点击“返回”
 						aDialog.dismiss();
 					}
 				}).setView(editText).show();
 	}
-	
-	/** 
-	* @Title: refreshUpView 
-	* @Description: TODO
-	* @author  xie.xin
-	* @param @param imgsList
-	* @param @param upload_photo_number 已经上传的图片
-	* @param @param photo_upload_number 需要上传 的图片
-	* @return void 
-	* @throws 
-	*/
-	public void refreshUpView(List<String> imgsList,int upload_photo_number,int photo_upload_number){
+
+	/**
+	 * @Title: refreshUpView
+	 * @Description: TODO
+	 * @author xie.xin
+	 * @param @param imgsList
+	 * @param @param upload_photo_number 已经上传的图片
+	 * @param @param photo_upload_number 需要上传 的图片
+	 * @return void
+	 * @throws
+	 */
+	public void refreshUpView(List<String> imgsList, int upload_photo_number,
+			int photo_upload_number) {
 		imgsScrollView2.setVisibility(View.VISIBLE);
 		imgsScrollView2.removeAllViews();
-		
+
 		int s = imgsList.size();
-		LinearLayout linearLayout = new LinearLayout(
-				getActivity());
+		LinearLayout linearLayout = new LinearLayout(getActivity());
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, 600);
 		linearLayout.setLayoutParams(lp);
-		
+
 		linearLayout11.setVisibility(View.VISIBLE);
 		TextView textView = new TextView(getActivity());
 		textView.setText("已经上传图片：");
@@ -1237,19 +1284,19 @@ public class FragmentDownLoad extends BaseFragment {
 				.parseColor(Constant.ColorValues.TITLE_COLOR));
 		textView.setTextSize(20);
 		textView.setPadding(40, 20, 0, 20);
-		
+
 		linearLayout11.addView(textView);
-		
-		int u = photo_upload_number-upload_photo_number;
-		if(u>0){
+
+		int u = photo_upload_number - upload_photo_number;
+		if (u > 0) {
 			TextView textView2 = new TextView(getActivity());
-			textView2.setText("再上传 "+u+" 张图片完成任务");
+			textView2.setText("再上传 " + u + " 张图片完成任务");
 			textView2.setTextColor(Color
 					.parseColor(Constant.ColorValues.LIGHT_RED));
 			textView2.setTextSize(15);
 			textView2.setPadding(0, 20, 0, 20);
 			linearLayout11.addView(textView2);
-		}else{
+		} else {
 			linearLayout9.setVisibility(View.GONE);
 			TextView textView2 = new TextView(getActivity());
 			textView2.setText("上传完成，等待审核");
@@ -1260,7 +1307,7 @@ public class FragmentDownLoad extends BaseFragment {
 			textView2.setPadding(0, 20, 0, 20);
 			linearLayout11.addView(textView2);
 		}
-		
+
 		for (int i = 0; i < s; i++) {
 			final String url = imgsList.get(i);
 			ImageView imageView = new ImageView(getActivity());
@@ -1280,13 +1327,13 @@ public class FragmentDownLoad extends BaseFragment {
 		}
 		imgsScrollView2.addView(linearLayout);
 	}
-	
-	private void postAppeal(String str){
+
+	private void postAppeal(String str) {
 		if (progressDialog != null) {
 			progressDialog.dismiss();
 		}
 		HttpUtil.setParams("app_id", pref.getString(Constant.APP_ID, "0"));
-		HttpUtil.setParams("ad_install_id", appInfo.getInstall_id()+"");
+		HttpUtil.setParams("ad_install_id", appInfo.getInstall_id() + "");
 		HttpUtil.setParams("appeal_reason", str);
 		HttpUtil.post(Constant.URL.APPEAL, new ResponseStateListener() {
 
@@ -1298,30 +1345,34 @@ public class FragmentDownLoad extends BaseFragment {
 						jsonObject = new JSONObject(result.toString());
 						String code = jsonObject.getString("code");
 						if (code.equals("1")) {
-							Toast.makeText(getActivity(), "申诉成功", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), "申诉成功",
+									Toast.LENGTH_SHORT).show();
 						} else {
 							if (progressDialog != null) {
 								progressDialog.dismiss();
 							}
-							Toast.makeText(getActivity(), "申诉失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), "申诉失败",
+									Toast.LENGTH_SHORT).show();
 						}
 					} catch (Exception e) {
 						if (progressDialog != null) {
 							progressDialog.dismiss();
 						}
-						Toast.makeText(getActivity(), "申诉失败", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "申诉失败",
+								Toast.LENGTH_SHORT).show();
 					}
-				}else{
+				} else {
 					if (progressDialog != null) {
 						progressDialog.dismiss();
 					}
-					Toast.makeText(getActivity(), "申诉失败", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "申诉失败", Toast.LENGTH_SHORT)
+							.show();
 				}
 			}
 		});
 	}
-	
-	Handler mHandler = new Handler(){
+
+	Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:

@@ -682,23 +682,32 @@ public class TangGuoActivity extends FragmentActivity implements
 					String content) {
 				Log.i("TangGuoActivity", content);
 				JSONObject obj = null;
+				JSONObject json = null;
 				try {
 					obj = new JSONObject(content);
 					if (obj != null && obj.getInt("code") == 1) {
-//						if (fragmentDownLoad.appInfo.isSign()) {
-//							editor.putInt(Constant.S_RESOURCE_ID,
-//									fragmentDownLoad.appInfo.getResource_id());
-//						} else {
-//							editor.putInt(Constant.RESOURCE_ID,
-//									fragmentDownLoad.appInfo.getResource_id());
-//						}
-						//editor.commit();
-
 						progressDialog.dismiss();
-						//fragmentDownLoad.linearLayout9.setVisibility(View.GONE);
-						//refreshUpView(23);
+						
 						Toast.makeText(TangGuoActivity.this, "图片上传成功",
 								Toast.LENGTH_LONG).show();
+						
+						json = obj.getJSONObject("data");
+						if(json!=null){
+							int uploadNum = json.getInt("upload_photo_number");
+							int photoNum = json.getInt("photo_upload_number");
+							JSONArray jarr = json.getJSONArray("upload_picture_list");
+							List<String> list = new ArrayList<String>();
+							if(jarr!=null && jarr.length()>0){
+								int l = jarr.length();
+								for(int i=0; i<l; i++){
+									list.add(jarr.getString(i));
+								}
+							}
+							if(list.size()>0){
+								fragmentDownLoad.refreshUpView(list,uploadNum,photoNum);
+							}
+						}
+						
 					} else {
 						Toast.makeText(TangGuoActivity.this,
 								"图片上传失败！" + obj.getString("info"),
@@ -706,7 +715,10 @@ public class TangGuoActivity extends FragmentActivity implements
 						progressDialog.dismiss();
 					}
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
+					progressDialog.dismiss();
+					Toast.makeText(TangGuoActivity.this,
+							"图片上传失败！",
+							Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 				}
 
