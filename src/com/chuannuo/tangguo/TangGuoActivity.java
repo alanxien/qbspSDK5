@@ -464,7 +464,7 @@ public class TangGuoActivity extends FragmentActivity implements
 				if (!pref.getBoolean(Constant.IS_SIGN, false)) {
 					fragmentRecomm.refreshData();
 				} else {
-					fragmentDepth.refreshData();
+					fragmentDepth.refresh();
 				}
 				rLinearLayout.setVisibility(View.VISIBLE);
 				dLinearLayout.setVisibility(View.VISIBLE);
@@ -488,10 +488,11 @@ public class TangGuoActivity extends FragmentActivity implements
 				fragmentDownLoad.popupWindow.dismiss();
 				return true;
 			} else if (rLinearLayout.getVisibility() == View.GONE) {
+				mFragmentManager.popBackStack();
 				if (!pref.getBoolean(Constant.IS_SIGN, false)) {
 					fragmentRecomm.refreshData();
 				} else {
-					fragmentDepth.refreshData();
+					fragmentDepth.refresh();
 				}
 				rLinearLayout.setVisibility(View.VISIBLE);
 				dLinearLayout.setVisibility(View.VISIBLE);

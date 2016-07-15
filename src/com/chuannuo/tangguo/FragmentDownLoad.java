@@ -515,7 +515,11 @@ public class FragmentDownLoad extends BaseFragment {
 					tv_screen.setVisibility(View.VISIBLE);
 					imgsScrollView.setVisibility(View.VISIBLE);
 
-					editor.putBoolean(Constant.IS_SIGN, false);
+					if (appInfo.isSign()) {
+						editor.putBoolean(Constant.IS_SIGN, true);
+					} else {
+						editor.putBoolean(Constant.IS_SIGN, false);
+					}
 					editor.commit();
 
 					if (appInfo.getImgsList() != null
