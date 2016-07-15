@@ -497,8 +497,7 @@ public class FragmentDownLoad extends BaseFragment {
 					tv_tips3.setText("按下面示例图截图上传即可获得 "
 							+ appInfo.getPhoto_integral()
 							+ appInfo.getTextName() + "，（注意只有一次上传机会，请严格按照要求上传）");
-					if (appInfo.getPhoto_status() == 1
-							|| appInfo.getPhoto_status() == 2
+					if (appInfo.getPhoto_status() == 2
 							|| appInfo.getPhoto_status() == 3
 							|| appInfo.getPhoto_status() == 4) {
 						linearLayout9.setVisibility(View.GONE);
@@ -1270,6 +1269,7 @@ public class FragmentDownLoad extends BaseFragment {
 			int photo_upload_number) {
 		imgsScrollView2.setVisibility(View.VISIBLE);
 		imgsScrollView2.removeAllViews();
+		linearLayout11.removeAllViews();
 
 		int s = imgsList.size();
 		LinearLayout linearLayout = new LinearLayout(getActivity());

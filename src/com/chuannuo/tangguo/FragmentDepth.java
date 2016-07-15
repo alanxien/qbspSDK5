@@ -256,6 +256,8 @@ public class FragmentDepth extends BaseFragment{
 														appInfo.setH5_big_url(h5Url);
 														appInfo.setPhoto(photo);
 													}
+													appInfo.setDescription(childObj
+															.getString("description"));
 													appInfo.setSign_times(obj
 															.getInt("sign_count"));
 													appInfo.setNeedSign_times(obj
@@ -501,6 +503,8 @@ public class FragmentDepth extends BaseFragment{
 													appInfo.setH5_big_url(h5Url);
 													appInfo.setPhoto(photo);
 												}
+												appInfo.setDescription(childObj
+														.getString("description"));
 												appInfo.setSign_times(obj
 														.getInt("sign_count"));
 												appInfo.setNeedSign_times(obj
