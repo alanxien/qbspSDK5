@@ -497,6 +497,7 @@ public class TangGuoActivity extends FragmentActivity implements
 				rLinearLayout.setVisibility(View.VISIBLE);
 				dLinearLayout.setVisibility(View.VISIBLE);
 				tvTitle.setText(Constant.StringValues.TITLE);
+				return false;
 			}
 		}
 		return super.onKeyDown(keyCode, event);
@@ -701,7 +702,7 @@ public class TangGuoActivity extends FragmentActivity implements
 							if(jarr!=null && jarr.length()>0){
 								int l = jarr.length();
 								for(int i=0; i<l; i++){
-									list.add(jarr.getString(i));
+									list.add(Constant.URL.ROOT_URL+jarr.getString(i));
 								}
 							}
 							if(list.size()>0){
