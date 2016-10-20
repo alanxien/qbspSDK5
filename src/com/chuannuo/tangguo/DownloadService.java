@@ -116,7 +116,7 @@ public class DownloadService extends Service implements Listener{
 		IntentFilter appInstallFilter = new IntentFilter();
 		appInstallFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
 		appInstallFilter.addDataScheme("package");
-		getApplicationContext().registerReceiver(appInstallReceiver,
+		context.registerReceiver(appInstallReceiver,
 				appInstallFilter);
 
 		builder = new Notification.Builder(this);

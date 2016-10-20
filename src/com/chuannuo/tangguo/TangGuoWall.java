@@ -163,6 +163,7 @@ public class TangGuoWall {
 		Intent intent = new Intent();
 		intent.putExtra("color", theme);
 		intent.setClass(context, TangGuoActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
 	
