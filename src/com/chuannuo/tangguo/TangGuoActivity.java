@@ -46,6 +46,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -75,7 +76,13 @@ public class TangGuoActivity extends FragmentActivity implements
 	private TextView tvDepth;
 	private TextView tvTitle;
 	private ImageView ivBack;
+	private EditText et1;
+	private EditText et2;
 	private ProgressDialog progressDialog;
+	
+	private boolean isFirst = true;
+	private String custom1 = "";
+	private String custom2 = "";
 
 	private LinearLayout containerLayout;
 
@@ -106,6 +113,10 @@ public class TangGuoActivity extends FragmentActivity implements
 		if (null == editor) {
 			editor = pref.edit();
 		}
+		
+		dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		
 		initView();
 		setContentView(this.rootLinearLayout);
 		try {
@@ -142,13 +153,15 @@ public class TangGuoActivity extends FragmentActivity implements
 	 */
 	private void imageCheckAlert() {
 		mAlertDialog = new AlertDialog.Builder(this).setTitle("图片审核信息")
-				.setPositiveButton("知道了", new DialogInterface.OnClickListener() {
+				.setPositiveButton("知道了",
+						new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				});
-		
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+							}
+						});
+
 		RequestParams params = new RequestParams();
 		params.put("app_id", pref.getString(Constant.APP_ID, "0"));
 		HttpUtils.get(Constant.URL.GET_AD_ALERT, params,
@@ -165,67 +178,105 @@ public class TangGuoActivity extends FragmentActivity implements
 								dataList.clear();
 								JSONObject obj = response.getJSONObject("data");
 								if (obj != null) {
-									JSONArray passArray = obj.getJSONArray("pass");
-									JSONArray failArray = obj.getJSONArray("fail");
+									JSONArray passArray = obj
+											.getJSONArray("pass");
+									JSONArray failArray = obj
+											.getJSONArray("fail");
 									JSONObject passObject;
 									JSONObject failObject;
 									String passInfo = "";
 									String failInfo = "";
-									String ids ="";
-									
-									DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+									String ids = "";
+
+									DecimalFormat df = new DecimalFormat("0.00");// 格式化小数
 									df.setRoundingMode(RoundingMode.DOWN);
-									if(passArray !=null && !passArray.equals("[]") && passArray.length()>0){
-										for(int i=0; i<passArray.length();i++){
+									if (passArray != null
+											&& !passArray.equals("[]")
+											&& passArray.length() > 0) {
+										for (int i = 0; i < passArray.length(); i++) {
 											TGData data = new TGData();
-											passObject = passArray.getJSONObject(i);
-											if(passObject != null){
-												double money = passObject.getInt("photo_integral")*Double.parseDouble(pref.getString(Constant.VC_PRICE, "1"));
-												passInfo = passInfo + passObject.getString("title")+" （审核通过）  +"+money+pref.getString(Constant.TEXT_NAME, "积分")+"\n";
-												ids = ids+passObject.getInt("ad_install_id")+",";
-												
+											passObject = passArray
+													.getJSONObject(i);
+											if (passObject != null) {
+												double money = passObject
+														.getInt("photo_integral")
+														* Double.parseDouble(pref
+																.getString(
+																		Constant.VC_PRICE,
+																		"1"));
+												passInfo = passInfo
+														+ passObject
+																.getString("title")
+														+ " （审核通过）  +"
+														+ money
+														+ pref.getString(
+																Constant.TEXT_NAME,
+																"积分") + "\n";
+												ids = ids
+														+ passObject
+																.getInt("ad_install_id")
+														+ ",";
+
 												data.setPass(true);
 												data.setRemarks("");
 												data.setScore(money);
-												data.setTitle(passObject.getString("title"));
+												data.setTitle(passObject
+														.getString("title"));
 												dataList.add(data);
 											}
-											
+
 										}
-										
-									}
-									
-									if(failArray !=null && !failArray.equals("[]") && failArray.length()>0){
-										for(int i=0; i<failArray.length();i++){
-											TGData data = new TGData();
-											failObject = failArray.getJSONObject(i);
-											if(failObject != null){
-												failInfo = failInfo + failObject.getString("title")+failObject.getString("photo_remarks")+" （审核失败）\n";
-												ids = ids+failObject.getInt("ad_install_id")+",";
-												data.setPass(false);
-												data.setRemarks(failObject.getString("photo_remarks"));
-												data.setScore(0.0);
-												data.setTitle(failObject.getString("title"));
-												dataList.add(data);
-											}
-											
-										}
-										
+
 									}
 
-									if(passInfo.length() > 0 || failInfo.length()>0){
-										mAlertDialog.setMessage(passInfo+failInfo);
+									if (failArray != null
+											&& !failArray.equals("[]")
+											&& failArray.length() > 0) {
+										for (int i = 0; i < failArray.length(); i++) {
+											TGData data = new TGData();
+											failObject = failArray
+													.getJSONObject(i);
+											if (failObject != null) {
+												failInfo = failInfo
+														+ failObject
+																.getString("title")
+														+ failObject
+																.getString("photo_remarks")
+														+ " （审核失败）\n";
+												ids = ids
+														+ failObject
+																.getInt("ad_install_id")
+														+ ",";
+												data.setPass(false);
+												data.setRemarks(failObject
+														.getString("photo_remarks"));
+												data.setScore(0.0);
+												data.setTitle(failObject
+														.getString("title"));
+												dataList.add(data);
+											}
+
+										}
+
+									}
+
+									if (passInfo.length() > 0
+											|| failInfo.length() > 0) {
+										mAlertDialog.setMessage(passInfo
+												+ failInfo);
 										mAlertDialog.show();
 									}
-									if(ids.length() > 0){
+									if (ids.length() > 0) {
 										Message msg = mHandler.obtainMessage();
 										msg.what = 1;
-										msg.obj = ids.substring(0,ids.length()-1);;
+										msg.obj = ids.substring(0,
+												ids.length() - 1);
+										;
 										mHandler.sendMessage(msg);
 									}
-									
+
 								}
-								
+
 							}
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -439,10 +490,10 @@ public class TangGuoActivity extends FragmentActivity implements
 					.parseColor(Constant.ColorValues.BTN_NORMAL_COLOR));
 
 			if (PhoneInformation.isSimReady()) {
-				if(pref.getBoolean(Constant.IS_REFRESH, false)){
+				if (pref.getBoolean(Constant.IS_REFRESH, false)) {
 					fragmentDepth = new FragmentDepth();
 				}
-				
+
 				if (!fragmentDepth.isAdded()) { // 先判断是否被add过
 					transaction.hide(fragmentRecomm)
 							.add(Constant.IDValues.CONTAINER, fragmentDepth)
@@ -559,10 +610,19 @@ public class TangGuoActivity extends FragmentActivity implements
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			final String picturePath = cursor.getString(columnIndex);
 			cursor.close();
-			ImageView view = new ImageView(this);
+			
+			LinearLayout linearLayout = new LinearLayout(this);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dm.widthPixels*1/2, dm.widthPixels*3/4);
+			linearLayout.setOrientation(LinearLayout.VERTICAL);
+			linearLayout.setBackgroundColor(Color.parseColor(Constant.ColorValues.WHITE));
+			linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+			
+			ImageView imageView = new ImageView(this);
 			try {
-				view.setImageBitmap(MediaStore.Images.Media.getBitmap(
+				imageView.setImageBitmap(MediaStore.Images.Media.getBitmap(
 						this.getContentResolver(), selectedImage));
+				lp.gravity = Gravity.CENTER_HORIZONTAL;
+				imageView.setLayoutParams(lp);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -570,6 +630,41 @@ public class TangGuoActivity extends FragmentActivity implements
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			final AppInfo appInfo = fragmentDownLoad.appInfo;
+			
+			et1 = new EditText(this);
+			et2 = new EditText(this);
+			TextView tv1 = new TextView(this);
+			TextView tv2 = new TextView(this);
+			LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 5);
+			tv1.setBackgroundColor(Color.parseColor(Constant.ColorValues.TITLE_COLOR));
+			tv2.setBackgroundColor(Color.parseColor(Constant.ColorValues.TITLE_COLOR));
+			tv1.setLayoutParams(lp1);
+			tv2.setLayoutParams(lp1);
+			
+			et1.setBackgroundDrawable(null);
+			et2.setBackgroundDrawable(null);
+			et1.setEms(100);
+			et2.setEms(100);
+			if(appInfo.getCustomField1()==null || appInfo.getCustomField1().isEmpty()){
+				et1.setVisibility(View.GONE);
+			}else if(isFirst){
+				et1.setVisibility(View.VISIBLE);
+				et1.setHint(appInfo.getCustomField1());
+			}
+			if(appInfo.getCustomField2()==null || appInfo.getCustomField2().isEmpty()){
+				et1.setVisibility(View.GONE);
+			}else if(isFirst){
+				et1.setVisibility(View.VISIBLE);
+				et2.setHint(appInfo.getCustomField2());
+			}
+			
+			linearLayout.addView(imageView);
+			linearLayout.addView(et1);
+			linearLayout.addView(tv1);
+			linearLayout.addView(et2);
+			linearLayout.addView(tv2);
+			linearLayout.setPadding(40, 40, 40, 40);
 
 			aDialog = new AlertDialog.Builder(this)
 					.setTitle("确认上传这张图片？")
@@ -580,7 +675,51 @@ public class TangGuoActivity extends FragmentActivity implements
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// 点击“确认”后的上传图片
-									uploadFile(picturePath);
+									if (custom1==null || custom1.isEmpty()) {
+										custom1 = et1.getText()
+												.toString();
+									}
+									if (custom2==null || custom2.isEmpty()) {
+										custom2 = et2.getText()
+												.toString();
+									}
+
+									if (!appInfo.getCustomField1().isEmpty()
+											&& !appInfo.getCustomField2().isEmpty()) {
+										if (custom1 != null && !custom1.isEmpty()
+												&& custom2 != null
+												&& !custom2.isEmpty()) {
+											uploadFile(picturePath);
+										} else {
+											Toast.makeText(
+													TangGuoActivity.this,
+													"上传失败，用户信息不能为空", Toast.LENGTH_LONG)
+													.show();
+										}
+									} else if (appInfo.getCustomField1().isEmpty()
+											&& !appInfo.getCustomField2().isEmpty()) {
+										if (custom2 != null && !custom2.isEmpty()) {
+											dialog.dismiss();
+											uploadFile(picturePath);
+										} else {
+											Toast.makeText(
+													TangGuoActivity.this,
+													"上传失败，用户信息不能为空", Toast.LENGTH_LONG)
+													.show();
+										}
+									} else if (!appInfo.getCustomField1().isEmpty()
+											&& appInfo.getCustomField2().isEmpty()) {
+										if (custom1 != null && !custom1.isEmpty()) {
+											uploadFile(picturePath);
+										} else {
+											Toast.makeText(
+													TangGuoActivity.this,
+													"上传失败，用户信息不能为空", Toast.LENGTH_LONG)
+													.show();
+										}
+									} else {
+										uploadFile(picturePath);
+									}
 								}
 							})
 					.setNegativeButton("返回",
@@ -592,7 +731,7 @@ public class TangGuoActivity extends FragmentActivity implements
 									// 点击“返回”
 									aDialog.dismiss();
 								}
-							}).setView(view).show();
+							}).setView(linearLayout).show();
 		}
 	}
 
@@ -617,52 +756,39 @@ public class TangGuoActivity extends FragmentActivity implements
 
 			File file = compress(srcPath, appInfo.getResource_id());
 			progressDialog.setMessage(Constant.StringValues.UPLODING);
-			if (appInfo.getClicktype() == 1) {
-				RequestParams params = new RequestParams();
-				try {
-					params.put("photo", file);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				params.put("app_id", pref.getString(Constant.APP_ID, "0"));
-				params.put("code", pref.getString(Constant.CODE, "0"));
-				params.put("key", PhoneInformation.getMetaData(this,
-						Constant.TANGGUO_APPKEY));
-				params.put("channel_id", PhoneInformation.getMetaData(this,
-						Constant.TANGGUO_APPID));
-				PhoneInformation.initTelephonyManager(this);
-				params.put("imei", PhoneInformation.getImei());
-				params.put("imsi", PhoneInformation.getImsi());
-				params.put("machineType", PhoneInformation.getMachineType());
-				params.put("net_type", PhoneInformation.getNetType() + "");
-				params.put("macaddress", PhoneInformation.getMacAddress());
-				params.put("androidid", Secure.getString(
-						this.getContentResolver(), Secure.ANDROID_ID));
-				params.put("resource_id", appInfo.getResource_id() + "");
-				params.put("ad_id", appInfo.getAdId() + "");
-				params.put("ip", pref.getString(Constant.IP, "0.0.0.0"));
-				if (TangGuoWall.getUserId() == null) {
-					params.put("app_user_id", TangGuoWall.getUserId() + "");
-				} else {
-					params.put("app_user_id", TangGuoWall.getUserId() + "");
-				}
-
-				upLoading(Constant.URL.UPLOADS_PHOTO_H5, params);
-			} else {
-				RequestParams params = new RequestParams();
-				try {
-					params.put("photo", file);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				params.put("ad_install_id", appInfo.getInstall_id() + "");
-				params.put("ip", pref.getString(Constant.IP, "0.0.0.0"));
-				params.put("code", pref.getString(Constant.CODE, ""));
-
-				upLoading(Constant.URL.UPLOADS_PHOTO, params);
+			RequestParams params = new RequestParams();
+			try {
+				params.put("photo", file);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			params.put("app_id", pref.getString(Constant.APP_ID, "0"));
+			params.put("code", pref.getString(Constant.CODE, "0"));
+			params.put("key",
+					PhoneInformation.getMetaData(this, Constant.TANGGUO_APPKEY));
+			params.put("channel_id",
+					PhoneInformation.getMetaData(this, Constant.TANGGUO_APPID));
+			PhoneInformation.initTelephonyManager(this);
+			params.put("imei", PhoneInformation.getImei());
+			params.put("imsi", PhoneInformation.getImsi());
+			params.put("machineType", PhoneInformation.getMachineType());
+			params.put("net_type", PhoneInformation.getNetType() + "");
+			params.put("macaddress", PhoneInformation.getMacAddress());
+			params.put("androidid", Secure.getString(this.getContentResolver(),
+					Secure.ANDROID_ID));
+			params.put("resource_id", appInfo.getResource_id() + "");
+			params.put("ad_id", appInfo.getAdId() + "");
+			params.put("ip", pref.getString(Constant.IP, "0.0.0.0"));
+			if (TangGuoWall.getUserId() == null) {
+				params.put("app_user_id", TangGuoWall.getUserId() + "");
+			} else {
+				params.put("app_user_id", TangGuoWall.getUserId() + "");
+			}
+			
+			params.put("custom1", custom1==null?"":custom1);
+			params.put("custom2", custom2==null?"":custom2);
+			upLoading(Constant.URL.UPLOADS_PHOTO, params);
 		}
 
 	}
@@ -683,33 +809,37 @@ public class TangGuoActivity extends FragmentActivity implements
 			public void onSuccess(int statusCode, Header[] headers,
 					String content) {
 				Log.i("TangGuoActivity", content);
+				isFirst = false;
 				JSONObject obj = null;
 				JSONObject json = null;
 				try {
 					obj = new JSONObject(content);
 					if (obj != null && obj.getInt("code") == 1) {
 						progressDialog.dismiss();
-						
+
 						Toast.makeText(TangGuoActivity.this, "图片上传成功",
 								Toast.LENGTH_LONG).show();
-						
+
 						json = obj.getJSONObject("data");
-						if(json!=null){
+						if (json != null) {
 							int uploadNum = json.getInt("upload_photo_number");
 							int photoNum = json.getInt("photo_upload_number");
-							JSONArray jarr = json.getJSONArray("upload_picture_list");
+							JSONArray jarr = json
+									.getJSONArray("upload_picture_list");
 							List<String> list = new ArrayList<String>();
-							if(jarr!=null && jarr.length()>0){
+							if (jarr != null && jarr.length() > 0) {
 								int l = jarr.length();
-								for(int i=0; i<l; i++){
-									list.add(Constant.URL.ROOT_URL+jarr.getString(i));
+								for (int i = 0; i < l; i++) {
+									list.add(Constant.URL.ROOT_URL
+											+ jarr.getString(i));
 								}
 							}
-							if(list.size()>0){
-								fragmentDownLoad.refreshUpView(list,uploadNum,photoNum);
+							if (list.size() > 0) {
+								fragmentDownLoad.refreshUpView(list, uploadNum,
+										photoNum);
 							}
 						}
-						
+
 					} else {
 						Toast.makeText(TangGuoActivity.this,
 								"图片上传失败！" + obj.getString("info"),
@@ -718,8 +848,7 @@ public class TangGuoActivity extends FragmentActivity implements
 					}
 				} catch (JSONException e) {
 					progressDialog.dismiss();
-					Toast.makeText(TangGuoActivity.this,
-							"图片上传失败！",
+					Toast.makeText(TangGuoActivity.this, "图片上传失败！",
 							Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 				}
@@ -769,8 +898,6 @@ public class TangGuoActivity extends FragmentActivity implements
 				e.printStackTrace();
 			}
 		}
-		dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
 
 		float hh = dm.heightPixels;
 		float ww = dm.widthPixels;
@@ -795,7 +922,7 @@ public class TangGuoActivity extends FragmentActivity implements
 		int quality = 100;
 		bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
 		System.out.println(baos.toByteArray().length);
-		while (baos.toByteArray().length > 45 * 1024 && quality>0) {
+		while (baos.toByteArray().length > 45 * 1024 && quality > 0) {
 			baos.reset();
 			bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
 			quality -= 20;
@@ -821,7 +948,7 @@ public class TangGuoActivity extends FragmentActivity implements
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
-				if(msg.obj  != null){
+				if (msg.obj != null) {
 					modifyAdAlert(msg.obj);
 				}
 				break;
@@ -830,36 +957,43 @@ public class TangGuoActivity extends FragmentActivity implements
 			}
 		};
 	};
-	
-	private void modifyAdAlert(Object obj){
+
+	private void modifyAdAlert(Object obj) {
 		String adIds = (String) obj;
 		RequestParams p = new RequestParams();
 		p.put("app_id", pref.getString(Constant.APP_ID, "0"));
 		p.put("ad_install_id_list", adIds);
-		HttpUtils.post(Constant.URL.MOD_AD_ALERT, p, new TGHttpResponseHandler(){
-			/* (non-Javadoc)
-			 * @see com.chuannuo.tangguo.net.TGHttpResponseHandler#onSuccess(int, org.apache.http.Header[], java.lang.String)
-			 */
-			@Override
-			public void onSuccess(int statusCode, Header[] headers,
-					String content) {
-				// TODO Auto-generated method stub
-				super.onSuccess(statusCode, headers, content);
-				JSONObject obj = null;
-				try {
-					obj = new JSONObject(content);
-					if (obj!=null && obj.getString("code").equals("1")) {
-						//回调
-						if(TangGuoWall.tangGuoWallListener != null){
-							TangGuoWall.tangGuoWallListener.onUploadImgs(dataList);
+		HttpUtils.post(Constant.URL.MOD_AD_ALERT, p,
+				new TGHttpResponseHandler() {
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see
+					 * com.chuannuo.tangguo.net.TGHttpResponseHandler#onSuccess
+					 * (int, org.apache.http.Header[], java.lang.String)
+					 */
+					@Override
+					public void onSuccess(int statusCode, Header[] headers,
+							String content) {
+						// TODO Auto-generated method stub
+						super.onSuccess(statusCode, headers, content);
+						JSONObject obj = null;
+						try {
+							obj = new JSONObject(content);
+							if (obj != null
+									&& obj.getString("code").equals("1")) {
+								// 回调
+								if (TangGuoWall.tangGuoWallListener != null) {
+									TangGuoWall.tangGuoWallListener
+											.onUploadImgs(dataList);
+								}
+							}
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
+
 					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-		});
+				});
 	}
 }

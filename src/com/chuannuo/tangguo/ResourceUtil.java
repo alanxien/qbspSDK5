@@ -52,6 +52,11 @@ public class ResourceUtil {
 	  
 	  } 
 	
+	public static Drawable bitmapToDrawble(Bitmap bitmap,Context mcontext){  
+        Drawable drawable = new BitmapDrawable(mcontext.getResources(), bitmap);  
+        return drawable;  
+    } 
+	
     public static Bitmap drawable2Bitmap(Drawable drawable) {  
         if (drawable instanceof BitmapDrawable) {  
             return ((BitmapDrawable) drawable).getBitmap();  

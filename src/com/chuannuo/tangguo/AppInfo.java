@@ -53,6 +53,11 @@ public class AppInfo implements Serializable{
 	private int curr_upload_photo;//已经上传多少张
 	private int appeal;//申诉
 	
+	private int isCustom;
+	private int customStatus;
+	private String customField1;
+	private String customField2;
+	
 	private boolean isSign = false; //是否是签到任务
 	private boolean isSignTime = false;
 
@@ -136,6 +141,30 @@ public class AppInfo implements Serializable{
 	}
 	public String getIcon() {
 		return icon;
+	}
+	public int getIsCustom() {
+		return isCustom;
+	}
+	public int getCustomStatus() {
+		return customStatus;
+	}
+	public String getCustomField1() {
+		return customField1;
+	}
+	public String getCustomField2() {
+		return customField2;
+	}
+	public void setIsCustom(int isCustom) {
+		this.isCustom = isCustom;
+	}
+	public void setCustomStatus(int customStatus) {
+		this.customStatus = customStatus;
+	}
+	public void setCustomField1(String customField1) {
+		this.customField1 = customField1;
+	}
+	public void setCustomField2(String customField2) {
+		this.customField2 = customField2;
 	}
 	public boolean isSignTime() {
 		return isSignTime;

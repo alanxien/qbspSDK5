@@ -83,8 +83,7 @@ public class Constant {
 		public static final String EXCHANGE_ADD_URL = BASE_URL + "exchangeAddIntegral";
 		
 		public static final String DOWNLOAD_URL = BASE_URL+"getResourceListHtml"; //截图任务接口
-		public static final String UPLOADS_PHOTO = BASE_URL +"uploadsPhotos";//上传图片
-		public static final String UPLOADS_PHOTO_H5 = BASE_URL +"uploadsPhotoHtmls";//上传图片
+		public static final String UPLOADS_PHOTO = BASE_URL +"uploadsPhotoHtmls";//上传图片
 		
 		public static final String GET_AD_ALERT = BASE_URL + "getUserAdAlert";//图片审核
 		public static final String MOD_AD_ALERT = BASE_URL + "modifyUserAdAlert";//图片审核

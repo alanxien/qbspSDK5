@@ -323,6 +323,11 @@ public class FragmentRecomm extends BaseFragment {
 													if(appInfo.getTitle().equals("")){
 														appInfo.setTitle(appInfo.getName());
 													}
+													
+													appInfo.setIsCustom(obj.getInt("is_custom"));
+													appInfo.setCustomField1(obj.getString("custom1"));
+													appInfo.setCustomField2(obj.getString("custom2"));
+													
 													appInfo.setDescription(obj
 															.getString("description"));
 													appInfo.setPackage_name(obj

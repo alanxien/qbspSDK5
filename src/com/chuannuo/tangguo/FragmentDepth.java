@@ -226,6 +226,12 @@ public class FragmentDepth extends BaseFragment{
 														
 														appInfo.setBigPushUrl(childObj.getString("big_push_url").isEmpty()?"":Constant.URL.ROOT_URL+childObj.getString("big_push_url"));
 														
+														
+														appInfo.setCustomStatus(obj.getInt("is_custom_status"));
+														appInfo.setIsCustom(obj.getInt("is_custom"));
+														appInfo.setCustomField1(obj.getString("custom1"));
+														appInfo.setCustomField2(obj.getString("custom2"));
+														
 														String photo = obj.getString("photo");
 														if(!photo.isEmpty()&&!photo.contains("http")){
 															photo = Constant.URL.ROOT_URL
@@ -472,6 +478,11 @@ public class FragmentDepth extends BaseFragment{
 													appInfo.setPhoto_remarks(childObj.getString("photo_remarks"));
 													appInfo.setCheck_remarks(obj.getString("photo_remarks"));
 													appInfo.setBigPushUrl(childObj.getString("big_push_url").isEmpty()?"":Constant.URL.ROOT_URL+childObj.getString("big_push_url"));
+													
+													appInfo.setCustomStatus(obj.getInt("is_custom_status"));
+													appInfo.setIsCustom(obj.getInt("is_custom"));
+													appInfo.setCustomField1(obj.getString("custom1"));
+													appInfo.setCustomField2(obj.getString("custom2"));
 													
 													String photo = obj.getString("photo");
 													if(!photo.isEmpty()&&!photo.contains("http")){
