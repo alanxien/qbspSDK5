@@ -648,14 +648,18 @@ public class TangGuoActivity extends FragmentActivity implements
 			et2.setEms(100);
 			if(appInfo.getCustomField1()==null || appInfo.getCustomField1().isEmpty()){
 				et1.setVisibility(View.GONE);
+				tv1.setVisibility(View.GONE);
 			}else if(isFirst){
+				tv1.setVisibility(View.VISIBLE);
 				et1.setVisibility(View.VISIBLE);
 				et1.setHint(appInfo.getCustomField1());
 			}
 			if(appInfo.getCustomField2()==null || appInfo.getCustomField2().isEmpty()){
-				et1.setVisibility(View.GONE);
+				et2.setVisibility(View.GONE);
+				tv2.setVisibility(View.GONE);
 			}else if(isFirst){
-				et1.setVisibility(View.VISIBLE);
+				et2.setVisibility(View.VISIBLE);
+				tv2.setVisibility(View.VISIBLE);
 				et2.setHint(appInfo.getCustomField2());
 			}
 			
