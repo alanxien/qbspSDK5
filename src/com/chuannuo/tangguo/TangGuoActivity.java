@@ -653,7 +653,11 @@ public class TangGuoActivity extends FragmentActivity implements
 				tv1.setVisibility(View.VISIBLE);
 				et1.setVisibility(View.VISIBLE);
 				et1.setHint(appInfo.getCustomField1());
+			}else{
+				et1.setVisibility(View.GONE);
+				tv1.setVisibility(View.GONE);
 			}
+			
 			if(appInfo.getCustomField2()==null || appInfo.getCustomField2().isEmpty()){
 				et2.setVisibility(View.GONE);
 				tv2.setVisibility(View.GONE);
@@ -661,6 +665,9 @@ public class TangGuoActivity extends FragmentActivity implements
 				et2.setVisibility(View.VISIBLE);
 				tv2.setVisibility(View.VISIBLE);
 				et2.setHint(appInfo.getCustomField2());
+			}else{
+				et2.setVisibility(View.GONE);
+				tv2.setVisibility(View.GONE);
 			}
 			
 			linearLayout.addView(imageView);
@@ -813,12 +820,12 @@ public class TangGuoActivity extends FragmentActivity implements
 			public void onSuccess(int statusCode, Header[] headers,
 					String content) {
 				Log.i("TangGuoActivity", content);
-				isFirst = false;
 				JSONObject obj = null;
 				JSONObject json = null;
 				try {
 					obj = new JSONObject(content);
 					if (obj != null && obj.getInt("code") == 1) {
+						isFirst = false;
 						progressDialog.dismiss();
 
 						Toast.makeText(TangGuoActivity.this, "图片上传成功",

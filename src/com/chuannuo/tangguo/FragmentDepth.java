@@ -229,8 +229,8 @@ public class FragmentDepth extends BaseFragment{
 														
 														appInfo.setCustomStatus(obj.getInt("is_custom_status"));
 														appInfo.setIsCustom(obj.getInt("is_custom"));
-														appInfo.setCustomField1(obj.getString("custom1"));
-														appInfo.setCustomField2(obj.getString("custom2"));
+														appInfo.setCustomField1(childObj.getString("custom1"));
+														appInfo.setCustomField2(childObj.getString("custom2"));
 														
 														String photo = obj.getString("photo");
 														if(!photo.isEmpty()&&!photo.contains("http")){
@@ -481,8 +481,8 @@ public class FragmentDepth extends BaseFragment{
 													
 													appInfo.setCustomStatus(obj.getInt("is_custom_status"));
 													appInfo.setIsCustom(obj.getInt("is_custom"));
-													appInfo.setCustomField1(obj.getString("custom1"));
-													appInfo.setCustomField2(obj.getString("custom2"));
+													appInfo.setCustomField1(childObj.getString("custom1"));
+													appInfo.setCustomField2(childObj.getString("custom2"));
 													
 													String photo = obj.getString("photo");
 													if(!photo.isEmpty()&&!photo.contains("http")){
