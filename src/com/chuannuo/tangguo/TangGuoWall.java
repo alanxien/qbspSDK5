@@ -104,6 +104,7 @@ public class TangGuoWall {
 	}
 	
 	public static void init(Context ctx,String id){
+		
 		context = ctx;
 		if (null == pref) {
 			pref = context.getSharedPreferences(Constant.PREF_QIANBAO_SDK,

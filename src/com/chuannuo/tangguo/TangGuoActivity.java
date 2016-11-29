@@ -36,6 +36,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings.Secure;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -64,7 +66,7 @@ import com.chuannuo.tangguo.net.TGHttpResponseHandler;
  * @version: V1.0
  */
 public class TangGuoActivity extends FragmentActivity implements
-		OnClickListener, BaseFragment.BtnClickListener {
+		OnClickListener, BaseFragment.BtnClickListener{
 
 	private LinearLayout rootLinearLayout;
 	private FrameLayout fLinearLayout;
@@ -79,7 +81,7 @@ public class TangGuoActivity extends FragmentActivity implements
 	private EditText et1;
 	private EditText et2;
 	private ProgressDialog progressDialog;
-	
+
 	private boolean isFirst = true;
 	private String custom1 = "";
 	private String custom2 = "";
@@ -106,6 +108,7 @@ public class TangGuoActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
 		if (null == pref) {
 			pref = getSharedPreferences(Constant.PREF_QIANBAO_SDK,
 					Context.MODE_PRIVATE);
@@ -113,10 +116,10 @@ public class TangGuoActivity extends FragmentActivity implements
 		if (null == editor) {
 			editor = pref.edit();
 		}
-		
+
 		dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		
+
 		initView();
 		setContentView(this.rootLinearLayout);
 		try {
@@ -610,13 +613,15 @@ public class TangGuoActivity extends FragmentActivity implements
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			final String picturePath = cursor.getString(columnIndex);
 			cursor.close();
-			
+
 			LinearLayout linearLayout = new LinearLayout(this);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dm.widthPixels*1/2, dm.widthPixels*3/4);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					dm.widthPixels * 1 / 2, dm.widthPixels * 3 / 4);
 			linearLayout.setOrientation(LinearLayout.VERTICAL);
-			linearLayout.setBackgroundColor(Color.parseColor(Constant.ColorValues.WHITE));
+			linearLayout.setBackgroundColor(Color
+					.parseColor(Constant.ColorValues.WHITE));
 			linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-			
+
 			ImageView imageView = new ImageView(this);
 			try {
 				imageView.setImageBitmap(MediaStore.Images.Media.getBitmap(
@@ -631,45 +636,50 @@ public class TangGuoActivity extends FragmentActivity implements
 				e.printStackTrace();
 			}
 			final AppInfo appInfo = fragmentDownLoad.appInfo;
-			
+
 			et1 = new EditText(this);
 			et2 = new EditText(this);
 			TextView tv1 = new TextView(this);
 			TextView tv2 = new TextView(this);
-			LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 5);
-			tv1.setBackgroundColor(Color.parseColor(Constant.ColorValues.TITLE_COLOR));
-			tv2.setBackgroundColor(Color.parseColor(Constant.ColorValues.TITLE_COLOR));
+			LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT, 5);
+			tv1.setBackgroundColor(Color
+					.parseColor(Constant.ColorValues.TITLE_COLOR));
+			tv2.setBackgroundColor(Color
+					.parseColor(Constant.ColorValues.TITLE_COLOR));
 			tv1.setLayoutParams(lp1);
 			tv2.setLayoutParams(lp1);
-			
+
 			et1.setBackgroundDrawable(null);
 			et2.setBackgroundDrawable(null);
 			et1.setEms(100);
 			et2.setEms(100);
-			if(appInfo.getCustomField1()==null || appInfo.getCustomField1().isEmpty()){
+			if (appInfo.getCustomField1() == null
+					|| appInfo.getCustomField1().isEmpty()) {
 				et1.setVisibility(View.GONE);
 				tv1.setVisibility(View.GONE);
-			}else if(isFirst){
+			} else if (isFirst) {
 				tv1.setVisibility(View.VISIBLE);
 				et1.setVisibility(View.VISIBLE);
 				et1.setHint(appInfo.getCustomField1());
-			}else{
+			} else {
 				et1.setVisibility(View.GONE);
 				tv1.setVisibility(View.GONE);
 			}
-			
-			if(appInfo.getCustomField2()==null || appInfo.getCustomField2().isEmpty()){
+
+			if (appInfo.getCustomField2() == null
+					|| appInfo.getCustomField2().isEmpty()) {
 				et2.setVisibility(View.GONE);
 				tv2.setVisibility(View.GONE);
-			}else if(isFirst){
+			} else if (isFirst) {
 				et2.setVisibility(View.VISIBLE);
 				tv2.setVisibility(View.VISIBLE);
 				et2.setHint(appInfo.getCustomField2());
-			}else{
+			} else {
 				et2.setVisibility(View.GONE);
 				tv2.setVisibility(View.GONE);
 			}
-			
+
 			linearLayout.addView(imageView);
 			linearLayout.addView(et1);
 			linearLayout.addView(tv1);
@@ -686,47 +696,53 @@ public class TangGuoActivity extends FragmentActivity implements
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// 点击“确认”后的上传图片
-									if (custom1==null || custom1.isEmpty()) {
-										custom1 = et1.getText()
-												.toString();
+									if (custom1 == null || custom1.isEmpty()) {
+										custom1 = et1.getText().toString();
 									}
-									if (custom2==null || custom2.isEmpty()) {
-										custom2 = et2.getText()
-												.toString();
+									if (custom2 == null || custom2.isEmpty()) {
+										custom2 = et2.getText().toString();
 									}
 
 									if (!appInfo.getCustomField1().isEmpty()
-											&& !appInfo.getCustomField2().isEmpty()) {
-										if (custom1 != null && !custom1.isEmpty()
+											&& !appInfo.getCustomField2()
+													.isEmpty()) {
+										if (custom1 != null
+												&& !custom1.isEmpty()
 												&& custom2 != null
 												&& !custom2.isEmpty()) {
 											uploadFile(picturePath);
 										} else {
 											Toast.makeText(
 													TangGuoActivity.this,
-													"上传失败，用户信息不能为空", Toast.LENGTH_LONG)
-													.show();
+													"上传失败，用户信息不能为空",
+													Toast.LENGTH_LONG).show();
 										}
-									} else if (appInfo.getCustomField1().isEmpty()
-											&& !appInfo.getCustomField2().isEmpty()) {
-										if (custom2 != null && !custom2.isEmpty()) {
+									} else if (appInfo.getCustomField1()
+											.isEmpty()
+											&& !appInfo.getCustomField2()
+													.isEmpty()) {
+										if (custom2 != null
+												&& !custom2.isEmpty()) {
 											dialog.dismiss();
 											uploadFile(picturePath);
 										} else {
 											Toast.makeText(
 													TangGuoActivity.this,
-													"上传失败，用户信息不能为空", Toast.LENGTH_LONG)
-													.show();
+													"上传失败，用户信息不能为空",
+													Toast.LENGTH_LONG).show();
 										}
-									} else if (!appInfo.getCustomField1().isEmpty()
-											&& appInfo.getCustomField2().isEmpty()) {
-										if (custom1 != null && !custom1.isEmpty()) {
+									} else if (!appInfo.getCustomField1()
+											.isEmpty()
+											&& appInfo.getCustomField2()
+													.isEmpty()) {
+										if (custom1 != null
+												&& !custom1.isEmpty()) {
 											uploadFile(picturePath);
 										} else {
 											Toast.makeText(
 													TangGuoActivity.this,
-													"上传失败，用户信息不能为空", Toast.LENGTH_LONG)
-													.show();
+													"上传失败，用户信息不能为空",
+													Toast.LENGTH_LONG).show();
 										}
 									} else {
 										uploadFile(picturePath);
@@ -796,9 +812,9 @@ public class TangGuoActivity extends FragmentActivity implements
 			} else {
 				params.put("app_user_id", TangGuoWall.getUserId() + "");
 			}
-			
-			params.put("custom1", custom1==null?"":custom1);
-			params.put("custom2", custom2==null?"":custom2);
+
+			params.put("custom1", custom1 == null ? "" : custom1);
+			params.put("custom2", custom2 == null ? "" : custom2);
 			upLoading(Constant.URL.UPLOADS_PHOTO, params);
 		}
 

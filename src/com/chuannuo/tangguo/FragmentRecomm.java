@@ -106,10 +106,13 @@ public class FragmentRecomm extends BaseFragment {
 					break;
 				}
 			}
-			if (adapter != null) {
+			if (null == adapter) {
+				adapter = new RecommendTaskAdapter(getActivity(), recommList,
+						myListView);
+				myListView.setAdapter(adapter);
+			} else {
 				adapter.notifyDataSetChanged();
 			}
-
 		}
 		super.onResume();
 	}
@@ -132,10 +135,16 @@ public class FragmentRecomm extends BaseFragment {
 					break;
 				}
 			}
-			if (adapter != null) {
+			if (null == adapter) {
+				adapter = new RecommendTaskAdapter(getActivity(), recommList,
+						myListView);
+				myListView.setAdapter(adapter);
+			} else {
 				adapter.notifyDataSetChanged();
 			}
 
+		}else{
+			
 		}
 	}
 
@@ -176,10 +185,10 @@ public class FragmentRecomm extends BaseFragment {
 				if (null == adapter) {
 					adapter = new RecommendTaskAdapter(getActivity(),
 							recommList, myListView);
+					myListView.setAdapter(adapter);
 				} else {
 					adapter.notifyDataSetChanged();
 				}
-				myListView.setAdapter(adapter);
 				getIp();
 				break;
 			default:
@@ -427,6 +436,10 @@ public class FragmentRecomm extends BaseFragment {
 								} finally {
 									if(progressDialog != null){
 										progressDialog.dismiss();
+									}
+									if(adapter!=null){
+										
+										adapter.notifyDataSetChanged();
 									}
 								}
 

@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 
 public class MainActivity extends Activity implements TangGuoWallListener,
 TangGuoDataListListener,DownLoadListener,SignInListener{
@@ -33,6 +35,7 @@ TangGuoDataListListener,DownLoadListener,SignInListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		 
 		TangGuoWall.init(this,"123");
 		btn_show_wall = (Button) findViewById(R.id.btn_show_wall);
 		btn_get_data_list = (Button) findViewById(R.id.btn_get_data_list);
@@ -176,5 +179,7 @@ TangGuoDataListListener,DownLoadListener,SignInListener{
 			
 		}
 	}
+	
+	
 
 }
